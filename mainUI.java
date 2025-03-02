@@ -3,14 +3,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.*; 
 import javafx.scene.layout.*;
 import javafx.stage.Stage; 
+import javafx.geometry.Insets;
 
 public class mainUI extends Application{ 
     @Override
     public void start(Stage primaryStage){
         primaryStage.setTitle("DieCup");
 
-        //layout for UI 
-        VBox root = new VBox(10); //vertical layout, spacing
+        //layout for UI. VBox with spacing 
+        VBox root = new VBox(15); //increased spacing for a better layout 
+        root.setPadding(new Insets(10,10,10,10)); //adds padding 
 
         //dropdown for dice type
         ComboBox<String> diceType = new ComboBox<>(); 
@@ -23,6 +25,10 @@ public class mainUI extends Application{
             numDice.getItems().add(i);
         }
         numDice.setValue(1);
+
+        ComboBox <String> rollType = new ComboBox<>();
+        rollType.getItems().addAll("Normal", "Advantage", "Disadvantage");
+        rollType.setValue("Normal"); 
 
         //modifier input field
         TextField modInput = new TextField();
@@ -37,13 +43,24 @@ public class mainUI extends Application{
         //roll history area 
         TextArea history = new TextArea();
         history.setEditable(false);
-        history.setPrefHeight(150); 
+        history.setPrefHeight(100); 
 
         //reset button 
         Button reset = new Button("Reset"); 
 
+        //Row 1: dice type, dice number, roll type
+        HBox row1 = new HBox(10,diceType, numDice, rollType);
+
+        //Row 2, modifier 
+        HBox row2 = new HBox(10, new Label("Modifier: "), modInput);
+
+        //Row 3, roll button, reset button 
+        HBox row3 = new HBox(15, roll, reset);
+
+        row3.setAlignment(javafx.geometry.Pos.CENTER);
+
         //add to layout
-        root.getChildren().addAll(diceType,numDice,modInput,roll, result, history, reset);
+        root.getChildren().addAll(row1, row2, row3, result, history);
 
         //create scene
         Scene sc1 = new Scene(root, 400, 300);
